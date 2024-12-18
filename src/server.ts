@@ -13,19 +13,6 @@ export let httpServer: ReturnType<typeof http.createServer>;
 
 let isConnected = false;
 
-export const connectToDatabase = async (uri: string, options: ConnectOptions) => {
-    if (isConnected) {
-        console.log('Using existing connection');
-        return mongoose.connection;
-    }
-
-    const connection = await mongoose.connect(uri, options);
-    isConnected = true;
-    logging.log('Connected to db');
-    ('Database connected');
-    return connection;
-};
-
 export const Main = async () => {
     logging.log('----------------------------------------');
     logging.log('Initializing API');
@@ -39,11 +26,18 @@ export const Main = async () => {
 
     try {
         logging.log('MONGO_CONNECTION: ', mongo.MONGO_CONNECTION);
-        connectToDatabase(mongo.MONGO_CONNECTION, mongo.MOGO_OPTIONS);
-        //await mongoose.connect(mongo.MONGO_CONNECTION, mongo.MOGO_OPTIONS);
-        // logging.log('----------------------------------------');
-        // logging.log('Connected to db');
-        // logging.log('----------------------------------------');
+        if (isConnected) {
+            logging.log('----------------------------------------');
+            logging.log('Using existing connection');
+            logging.log('----------------------------------------');
+            return mongoose.connection;
+        }
+
+        const connection = await mongoose.connect(mongo.MONGO_CONNECTION, mongo.MOGO_OPTIONS);
+        isConnected = true;
+        logging.log('----------------------------------------');
+        logging.log('Connected to db', connection.version);
+        logging.log('----------------------------------------');
     } catch (error) {
         logging.log('----------------------------------------');
         logging.log('Unable to connect to db');
@@ -83,7 +77,6 @@ export const Main = async () => {
     });
 };
 
-//export const Shutdown = (callback: any) => httpServer && httpServer.close(callback);
 export const Shutdown = () => {
     return new Promise((resolve, reject) => {
         if (httpServer) {

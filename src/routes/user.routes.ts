@@ -4,11 +4,11 @@ import { authentication, authorizeRoles } from '../middleware/auth.middleware';
 const userRouter: Router = express.Router();
 
 /**
- * @route   POST /api/users/protected
+ * @route   GET /api/users/protected
  * @desc    A protected route
  * @access  Admin/Distributor/Retailer
  */
-userRouter.post('/protected', authentication, protectedRoute);
+userRouter.get('/protected', authentication, protectedRoute);
 
 /**
  * @route   GET /api/users/:id

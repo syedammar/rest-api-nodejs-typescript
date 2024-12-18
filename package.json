@@ -5,7 +5,9 @@
     "main": "src/server.ts",
     "scripts": {
         "dev": "nodemon",
+        "prod": "npm run build && npm start",
         "build": "npx rimraf dist && tsc -p tsconfig.build.json",
+        "start": "node dist/server.js",
         "test": "jest --config jest.config.ts --detectOpenHandles --coverage --maxWorkers=1"
     },
     "keywords": [
