@@ -1,6 +1,6 @@
 import http from 'http';
 import express from 'express';
-import mongoose, { ConnectOptions, Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 import './config/logging';
 import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';

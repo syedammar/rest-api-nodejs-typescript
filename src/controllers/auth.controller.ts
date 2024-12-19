@@ -1,10 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '../config/config';
 import User from '../models/user.model';
 import { generateToken } from '../middleware/auth.middleware';
-import mongoose from 'mongoose';
 
 //User registration
 export const registerUser = async (req: Request, res: Response) => {
@@ -32,7 +29,7 @@ export const loginUser = async (req: Request, res: Response) => {
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
-        const token = generateToken(user._id, user.role); //jwt.sign({ _id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+        const token = generateToken(user._id, user.role);
         return res.status(200).json({ token });
     } catch (error: any) {
         res.status(500).json({ error: error.message });
